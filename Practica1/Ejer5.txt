@@ -1,0 +1,22 @@
+#!bin/bash
+i=0
+while IFS=':' read var1 var2 var3 var4 var5 var6 var7;
+do
+	if [ "/home"= "$(dirname "$var6")" ];
+	then
+	echo -e "[Entry #$i]"
+	echo -e "\t login = $var1"
+	echo -e "\t enc = $var2"
+	echo -e "\t uid = $var3"
+	echo -e "\t gid = $var4"
+	echo -e "\t user_name = $var5"
+	echo -e "\t home = $var6"
+	echo -e "\t shell = $var7"
+	fi
+((i++))
+
+done < /etc/passwd
+
+
+COMANDO GREP
+grep "/home" /etc/passwd | cut -d: -f6

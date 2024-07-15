@@ -1,0 +1,236 @@
+Ejercicio 1-
+
+1.COMPILACION
+
+comandos
+_________
+cd Escritorio/SO/ficheros_p1/ejercicio1/1-Compilacion
+gcc --save-temps hello 2.c  
+./ a.out 
+_________
+PREGUNTAS
+Al compilar  y leer el define,la funcion min() se ha sustituido por ((a<b)?a:b))
+
+Stdio__> Libreria que devuelve un carácter desde un fichero. Lee caracteres de entrada hasta que encuentra un salto de línea, y los almacena en un único argumento. Usados para imprimir salidas de datos
+permite usar el printf y que min () se expanda
+
+
+2.MAKE
+
+Comandos
+_________
+cd Escritorio/SO/ficheros_p1/ejercicio1/2-Make
+_________
+Preguntas
+
+1-Las variables son cc que se establece en gcc(compilador),Cflags que son las opciones de compilacion y libs que son las librerias(en este caso la matematica)
+Objetivos:all que es el predeterminado,depende de aux.o,init.o y aux.h
+Reglas: %o: %c crear un archivo objeto a partir de uno fuente(c)
+        all para compilar el programa prueba depende d elos 3 mencionados antes
+	clean para limpiar los archivos
+2- gcc -Wall -g -c -o aux.o aux.c
+   gcc -Wall -g -c -o init.o init.c
+   gcc -Wall -g -o prueba aux.o init.o -lm
+
+3- touch aux.c 
+   make
+   gcc -Wall -g -c -o aux.o aux.c
+   gcc -Wall -g -o prueba aux.o init.o -lm
+
+la funcion touch te actualiza la fecha de acceso o modificacion
+
+4- make clean
+   te sale --> rm *.o prueba
+   se eliminan todos los archivos objetos y el ejecutable prueba
+   si se comenta  intentará buscar un conjunto de reglas que le permitan construir un archivo llamado clean. Si no encuentra ninguna regla para construir clean, mostrará un mensaje de error
+   
+5- Si se comenta el proceso de compilacion sera exitoso, pero el enlazado no(al crear el ejecutable prueba)
+ referencias sin definir,porque no podra encontrar las definiciones de las funciones matemáticas
+_________
+3.TAMAÑO DE VARIABLES
+
+cd Escritorio/SO/ficheros_p1/ejercicio1/3-Tam
+gcc --save-temps main1.c -o main1.out
+
+%d es valor numerico y es 122, en cambio %c es para un caracter y coge el valor 122 en ASCI que es la z
+char ocupa 8 bits(1 byte)
+ porque esta basado en ASCI
+porque c quiere tener mas precision y eeficiencia
+
+gcc --save-temps main2.c -o main2.out
+El problema es que a luego cambia de valor,entonces el tamaño del array se veria modificado 
+./a.out
+a y b si ,pero las demas no
+%lu es unsigned long
+pc apunta a x
+No no coincide el valor del tamaño de array1 con el num de elementos,porque son 10elementos pero hay que multiplicar por 4 que ocupa cada elemnto
+No no coinciden
+No porque str1 es un puntero a una cadena de caracteres (char*) y str2 es un arreglo de caracteres (char[]),cuyo  tamaño es la longitud mas 1 (/0)
+
+
+4 Arrays:
+
+
+array1.c
+¿Por qué no es necesario escribir "&list" para obtener la dirección del array list?
+Porque el nombre del array en si mismo se comporta como un puntero al primer elemento de array.
+
+¿Qué hay almacenado en la dirección de list?
+Primer valor del array (en la direccion exacta esta el primer valor, y en las siguientes los posteriores).
+En la dirección de list hay almacenado: {1431655136, 21845, 1431654496,21845, -7568}
+
+¿Por qué es necesario pasar como argumento el tamaño del array en la función init_array?
+Porque en C los arrays no almacenan la información de su tamaño comotal. Por eso es necesario que al inicializarlos se le pase como parámetro la longitud a la función.
+
+¿Por qué el tamaño devuelto por sizeof() para el array de la función init_array no coincide con el declarado en main()?
+Porque cuando tu pasas un array por parámetro de función, estas pasando el puntero al primer elemento, y se pierde el tamaño del array.
+entonces al pasar una direccion te da el tamaño de esa direccion(siempre 8 bytes)
+
+¿Por qué NO es necesario pasar como argumento el tamaño del array en la función init_array2?
+Porque le estas pasando a la función el la dirección de memoria y su argumento con "int array[N]".
+
+BASICAMENTE EN INITARRAY1,declaras el array pero sin tamaño dentro en cmabio en initarray2 declaras el array ya con el tamaño inicializado(n)
+¿Coincide el tamaño devuelto por sizeof() para el array de la función init_array2 con el declarado en main()?
+No coincide. (Preguntar) lo mismo que arriba
+
+PREGUNTAR SIZEOF
+
+array2.c
+¿La copia del array se realiza correctamente? ¿Por qué?
+No, puesto que tu por parámetro estas mandando el array sin argumento, y ese te da la información de la direccion de memoria en que se guarda su primer elemento. Por lo tanto en B se copia esa direccion de memoria.
+HAY QUE COPIAR ELEMENTO A ELEMENTO
+
+Si no es correcto, escribe un código que sí realice la copia correctamente.
+(Hecho en el archivo c)
+void copyArray(int src[], int dst[], int size)
+{
+    int i;
+    for (i = 0; i < size; i++)
+    {
+        dst[i] = src[i];
+    }
+}
+
+Descomenta la llamada a la función tmo en la función main(). Compila de nuevo y ejecuta.
+El problema que se produce, ¿es de compilación o de ejecución? ¿Por qué se produce?
+Es un error de compilación que se produce al entrar en un bucle for que va de 4 a maxvalid. y al estar declarado a solo hasta 4, empieza a rellenar en otras direcciones de memoria.
+
+Encuentra un valor de MAXVALID superior a 4 con el que no se dé el problema. ¿Se está escribiendo más allá del tamaño del array? Si es así, ¿por qué funciona el código?
+
+5
+Se está escribiendo más alla del array, pporque el bucle sobreescribe en las direcciones de memoria reservada a las demás variables. Haciendo así que el bucle sobreescriba "x, b, c".
+
+5 Punteros:
+
+
+punteros1.c
+¿Qué operador utilizamos para declarar una variable como un puntero a otro tipo?
+Utilizamos el operador "*".
+¿Qué operador utilizamos para obtener la dirección de una variable?
+Utilizamos el operador "&".
+¿Qué operador se utiliza para acceder al contenido de la dirección “a la que apunta” un puntero?
+Utilizamos el operador "*".
+Hay un error en el código. ¿Se produce en compilación o en ejecución? ¿Por qué se produce?
+Es un error de ejecución por segmentación de memoria(preguntar)
+tratando de acceder a una dirección de memoria que no está reservada 
+
+punteros2.c
+¿Cuántos bytes se reservan en memoria con la llamada a malloc()?
+Se reservan 127 bytes que es el valor del nelem que pasas por parámetros y por 4 que es el tamaño.
+
+¿Cuál es la dirección del primer y último byte de dicha zona reservada?
+El primer elemento estará en la dirección del puntero ptr. 
+ptr + (nelem-1)
+¿Por qué el contenido de la dirección apuntada por ptr es 7 y no 5 en el primer printf()?
+Porque igualas el primer elemto a 7, y luego imprimes el valor de memoria del primer elemento.
+porque ptr[0]=ptr
+
+¿Por qué se modfica el contenido de ptr[1] tras la sentencia *ptr2=15;?
+Porque al hacer ptr2++; avanzas uno en la dirección de memoria.
+
+Indica dos modos diferentes de escribir el valor 13 en la dirección correspondiente a ptr[100].
+ptr[100]=13;
+*(ptr + 99) =13;
+
+Hay un error en el código. ¿Se manifiesta en compilación o en ejecución? Aunque no se manifieste, el error está. ¿Cuál es?
+Libera el puntero pero luego le asigna el valor
+
+punteros3.c
+¿Por qué cambia el valor de ptr[13] tras la asignación ptr = &c;?
+Al cambiar la direccion de apuntado,pasa de apuntar a 0 a la direccion de array,entonces al sumar 13 posiciones  el contenido cambia 
+
+El código tiene (al menos) un error. ¿Se manifiesta en compilación o en ejecución? ¿Por qué?
+Se manifiesta en ejecución y ocurre al liberar la memoria del puntero. La función free solo mlibera memoria asignada por malloc, pero al igual ptr=&c, se asigna memoria no reservada con malloc porque esta apuntando a otro lado
+
+¿Qué ocurre con la zona reservada por malloc() tras a asignación ptr = &c;? ¿Cómo se puede acceder a ella? ¿Cómo se puede liberar dicha zona?
+Una vez perdida la referencia de malloc, por igualar ptr a c, solo mse puede acceder a ese bloque de memoria con una copia del puntero ptr. Si consigues tener un puntero valido podras liberar con free.
+Preguntar
+6 Funciones:
+
+
+arg1.c
+¿Por qué el valor de xc no se modifica tras la llamada a sumC? ¿Dónde se modifca esa información?
+La estrcturas no se modifican pasandolas por parametro ya que crean una copia local para realizar operaciones. Para modificar abría que tomar un puntero de la estructura.
+
+Comenta las dos declaraciones adelantadas de sum() y sumC(). Compila de nuevo, ¿Qué ocurre?
+Son una forma de decirle al compilador que hace la función que se va a llamar posteriormente.
+
+arg2.c
+¿Por qué cambia el valor de copy y tras la llamada a sum()?
+Porque en la función sum() se toman punteros como argumentos.
+
+¿Por qué en ocasiones se usa el operador ‘.’ y en otras ‘->’ para acceder a los campos de una estructura?
+Depende de si se esta trabajando con una varable (.) o un puntero(->).
+
+¿Por qué el valor de zc pasa a ser incorrecto sin volver a usarlo en el código?
+Corrije el código para evitar el error producido en zc	
+Porque creas una estructura local (r) en sumC, y cuando la devuelves deja de existir, por lo tanto en sumC devuelves un puntero inexistente. Y zc apunta a una memoria no valida.
+struct _complex_ *sumC(const struct _complex_ *a, const struct _complex_ *b) {
+    struct _complex_ *r = (struct _complex_ *)malloc(sizeof(struct _complex_));
+    r->re = a->re + b->re;
+    r->im = a->im + b->im;
+    return r;
+}
+
+/ Cadenas de Caracteres:
+
+
+strings1.c
+El código contiene un error. ¿Se manifiesta en compilación o en ejecución? ¿Por qué se produce?
+Error de ejecución. En p[0] = 'H', p[1] = 'i', p[2] = '\0'; porque intenta modificar una cadena de un puntero.
+
+ Soluciona el error comentando la(s) línea(s) afectadas. Vuelve a compilar y ejecutar.
+
+¿En qué dirección está la letra 'B' de la cadena "Bonjour"? ¿Y la de la la letra 'j'?
+B estara en la direccion de p y j en p+3;
+
+Tras la asignación p=msg2;, ¿cómo podemos recuperar la dirección de la cadena "Bonjour"?
+Para no perder la dirección hay que asegurarse de tener otro puntero que guarde la memoria de bonjour.
+
+¿Por qué la longitud de las cadenas p y msg2 es 2 tras la línea 30? Se asignan 3 bytes a 'p' que modifican a ambos, pero luego la longitud es sólo 2.
+Porque el contenido de p se modifica y en el tercer bit cierras la cadena con \0.
+
+¿Por qué strlen() devuelve un valor diferente a sizeof()?
+Porque strlen devuelve la longitud de caracteres hasta \0, y sizeof el número de bytes.
+
+strings2.c
+El código de copy no funciona. ¿Por qué?
+Porque al pasarse los parametros se crean de manera local y, no se modifican en el main.
+
+Usa ahora la función copy2() (descomenta la línea correspondiente). ¿Funciona la copia?
+Propón una implementación correcta de la copia.
+función copy2 puede modificar el puntero str2 en main. Sin embargo, la función copy2 en su forma actual simplemente asigna el puntero org al puntero *dst, lo que significa que str2 ahora apunta a la misma dirección de memoria que str1
+void copy2(char* org, char** dst)
+{
+    *dst = org;
+}
+¿Qué hace la función mod()? ¿Por qué funciona?
+Hace que llamando a dos cadenas en la de dst se colquen los caracteres en mayús de la cadena org.
+
+Descomenta la última llamada a la función mod(). Compila y ejecuta. ¿Por qué se produce el error?
+error en tiempo de ejecución. El error ocurre porque intentas modificar una cadena de caracteres literal, lo cual no está permitido en C.
+
+
+EJERCICIO 2
+________________________________________________
+

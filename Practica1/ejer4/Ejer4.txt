@@ -1,0 +1,13 @@
+Para representar cada una de las entradas del fichero /etc/passwd se emplea el tipo de datos passwd_entry_t (estructura definida en defs.h). Nótese que muchos de los campos almacenan cadenas de caracteres definidas como arrays de caracteres de longitud máxima prefijada, 
+o mediante el tipo de datos char*. La función parse_passwd(), definida en show-passwd.c es la encargada de inicializar los distintos campos de la estructura. 
+¿Cuál es el propósito de la función clone_string() que se usa para inicializar algunos de los citados campos tipo cadena? 
+Porque esa funcion te lo copia en la memoria respectiva(ya sea storage o pila)
+¿Por qué no es posible en algunos casos simplemente copiar la cadena vía strcpy() o realizando una asignación campo=cadena_existente;? Justifique la respuesta.
+Por que con strcopy no puedes acceder a la pila e independencia de datos
+xq si liberas la memoria y utilizas esos comandos ,apuntraiamnm a una memoria vacia en cambio con clone tienen una independencia de datos
+La función strsep(), utilizada en parse_passwd(), modifica la cadena que se desea dividir en tokens. ¿Qué tipo de modificaciones sufre la cadena (variable line) tras invocaciones sucesivas de strsep()? Pista: Consúltese el valor y las direcciones de las variables del programa usando el depurador.
+que te cambia los : por 0 '\000' y te los separa y te devuelve un puntero al token extraido
+
+CAMBIAR CLONE STRING Por strdup
+
+
